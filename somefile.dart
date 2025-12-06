@@ -14,6 +14,7 @@ class Wish {
 }
 
 class Wisher {
+  String? goodnessLevelSystemId;
   String? bio;
 }
 
@@ -21,6 +22,14 @@ class WishCategory {}
 
 class UserWish {
   Wisher? wisher;
+}
+
+enum GoodnessLevel {
+  veryGood,
+  good,
+  decent,
+  bad,
+  coalGuaranteed;
 }
 
 enum WishStatus {
@@ -120,6 +129,12 @@ void autoAssignWish(Wish wish) {
   });
 
   assignWish(wish, elfToAssign.$1);
+}
+
+GoodnessLevel getGoodnessForWisher(Wisher wisher) {
+  var id = wisher.goodnessLevelSystemId.hashCode;
+
+  return GoodnessLevel.values[id % GoodnessLevel.values.length];
 }
 
 extension on WishResolver {
