@@ -12,6 +12,8 @@ class Wish {
   Wisher? wisher;
   WishResolver? assignee;
   WishCategory? wishCategory;
+
+  List<Wisher> sharedWith = [];
 }
 
 class Wisher {
@@ -154,10 +156,14 @@ List<WishLog> getWishLogForCategory(WishCategory category) {
   return logs.where((wish) => wish.wish?.wishCategory == category).toList();
 }
 
-void shareWish(Wish wish, Wisher wisher) {
+void shareWish(Wish wish, Wisher wisher, Wisher sharedWith) {
   if (wish.wisher != wisher) {
     throw Exception("You cannot share this");
   }
+
+  wish.sharedWith.add(sharedWith);
+
+  log(wish, "Shared");
 
   print(
     getWishesAsUser(
