@@ -30,6 +30,16 @@ enum WishStatus {
 
 class WishResolver {}
 
+class WishStatistics {
+  WishResolver? resolver;
+  Map<WishStatus, int> statusCounts = Map.from({
+    WishStatus.wished: 0,
+    WishStatus.granted: 0,
+    WishStatus.denied: 0,
+    WishStatus.granting: 0,
+  }); 
+}
+
 final santa = WishResolver();
 final elvesPool = [
   WishResolver(),
@@ -45,6 +55,19 @@ List<UserWish> getWishesAsUser(Wisher wisher) {
       .where((wish) => wish.wisher == wisher)
       .map((wish) => UserWish()..wisher = wish.wisher)
       .toList();
+}
+
+List<WishStatistics> getStatistics() {
+  return [santa, ...elvesPool].map((resolver) {
+    var statistics = WishStatistics();
+    statistics.resolver = resolver;
+    statistics.statusCounts = {
+      for (var status in WishStatus.values) ...{
+        status: resolver.assignedWishes.where((wish) => wish.status == status).length,
+      }
+    };
+    return statistics;
+  }).toList();
 }
 
 void notifySantaOfWish(Wish wish) {}
