@@ -44,6 +44,16 @@ List<UserWish> getWishesAsUser(Wisher wisher) {
       .toList();
 }
 
+void notifySantaOfWish(Wish wish) {}
+
+Future<void> validateWishWithSanta(Wish wish) async {
+  notifySantaOfWish(wish);
+  await Future.delayed(Duration(minutes: 30));
+  if (wish.assignee == null) {
+    autoAssignWish(wish);
+  }
+}
+
 void createWish(Wish wish) {
   wishes.add(wish);
   autoAssignWish(wish);
