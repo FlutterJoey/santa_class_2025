@@ -7,6 +7,7 @@ void main() {
 void startApp() {}
 
 class Wish {
+  WishStatus status = WishStatus.wished;
   Wisher? wisher;
   WishResolver? assignee;
 }
@@ -15,6 +16,13 @@ class Wisher {}
 
 class UserWish {
   Wisher? wisher;
+}
+
+enum WishStatus {
+  wished,
+  granting,
+  granted,
+  denied;
 }
 
 class WishResolver {}
