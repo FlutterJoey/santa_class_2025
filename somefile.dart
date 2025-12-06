@@ -95,15 +95,19 @@ void categorizeWish(Wish wish, WishCategory category) {
 
 void createWish(Wish wish) {
   wishes.add(wish);
+  log(wish, "Created");
   autoAssignWish(wish);
 }
 
 void assignWish(Wish wish, WishResolver resolver) {
   wish.assignee = resolver;
+  log(wish, "Assigned to $resolver");
 }
 
 void resolveWish(WishResolver resolver, Wish wish) {
   if (wish.assignee != resolver) return;
+
+  log(wish, "Resolved");
 
   wish.status = WishStatus.granted;
 }
@@ -142,6 +146,10 @@ void log(Wish wish, String action) {
       ..action = action
       ..time = DateTime.now(),
   );
+}
+
+List<WishLog> getWishLogForCategory(WishCategory category) {
+  return logs.where((wish) => wish.wish?.wishCategory == category).toList();
 }
 
 extension on WishResolver {
