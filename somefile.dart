@@ -10,9 +10,12 @@ class Wish {
   WishStatus status = WishStatus.wished;
   Wisher? wisher;
   WishResolver? assignee;
+  WishCategory? wishCategory;
 }
 
 class Wisher {}
+
+class WishCategory {}
 
 class UserWish {
   Wisher? wisher;
@@ -52,6 +55,10 @@ Future<void> validateWishWithSanta(Wish wish) async {
   if (wish.assignee == null) {
     autoAssignWish(wish);
   }
+}
+
+void categorizeWish(Wish wish, WishCategory category) {
+  wish.wishCategory = category;
 }
 
 void createWish(Wish wish) {
