@@ -53,6 +53,12 @@ void assignWish(Wish wish, WishResolver resolver) {
   wish.assignee = resolver;
 }
 
+void resolveWish(WishResolver resolver, Wish wish) {
+  if (wish.assignee != resolver) return;
+
+  wish.status = WishStatus.granted;
+}
+
 void autoAssignWish(Wish wish) {
   var elfWithWishLength = elvesPool.map(
     (elf) => (elf, elf.assignedWishes.length),
