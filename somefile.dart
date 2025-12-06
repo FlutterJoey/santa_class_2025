@@ -24,22 +24,17 @@ class UserWish {
   Wisher? wisher;
 }
 
-enum GoodnessLevel {
-  veryGood,
-  good,
-  decent,
-  bad,
-  coalGuaranteed;
-}
+enum GoodnessLevel { veryGood, good, decent, bad, coalGuaranteed }
 
-enum WishStatus {
-  wished,
-  granting,
-  granted,
-  denied;
-}
+enum WishStatus { wished, granting, granted, denied }
 
 class WishResolver {}
+
+class WishLog {
+  Wish? wish;
+  String? action;
+  DateTime? time;
+}
 
 class WishStatistics {
   WishResolver? resolver;
@@ -48,7 +43,7 @@ class WishStatistics {
     WishStatus.granted: 0,
     WishStatus.denied: 0,
     WishStatus.granting: 0,
-  }); 
+  });
 }
 
 final santa = WishResolver();
@@ -59,6 +54,7 @@ final elvesPool = [
   WishResolver(),
 ];
 
+List<WishLog> logs = [];
 List<Wish> wishes = [];
 
 List<UserWish> getWishesAsUser(Wisher wisher) {
@@ -74,8 +70,10 @@ List<WishStatistics> getStatistics() {
     statistics.resolver = resolver;
     statistics.statusCounts = {
       for (var status in WishStatus.values) ...{
-        status: resolver.assignedWishes.where((wish) => wish.status == status).length,
-      }
+        status: resolver.assignedWishes
+            .where((wish) => wish.status == status)
+            .length,
+      },
     };
     return statistics;
   }).toList();
@@ -135,6 +133,15 @@ GoodnessLevel getGoodnessForWisher(Wisher wisher) {
   var id = wisher.goodnessLevelSystemId.hashCode;
 
   return GoodnessLevel.values[id % GoodnessLevel.values.length];
+}
+
+void log(Wish wish, String action) {
+  logs.add(
+    WishLog()
+      ..wish = wish
+      ..action = action
+      ..time = DateTime.now(),
+  );
 }
 
 extension on WishResolver {
