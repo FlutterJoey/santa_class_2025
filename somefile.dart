@@ -7,7 +7,14 @@ void main() {
 void startApp() {}
 
 class Wish {
+  Wisher? wisher;
   WishResolver? assignee;
+}
+
+class Wisher {}
+
+class UserWish {
+  Wisher? wisher;
 }
 
 class WishResolver {}
@@ -21,6 +28,14 @@ final elvesPool = [
 ];
 
 List<Wish> wishes = [];
+
+List<UserWish> getWishesAsUser(Wisher wisher) {
+  return wishes
+      .where((wish) => wish.wisher == wisher)
+      .map((wish) => UserWish()..wisher = wish.wisher)
+      .toList();
+}
+
 void createWish(Wish wish) {
   wishes.add(wish);
   autoAssignWish(wish);
