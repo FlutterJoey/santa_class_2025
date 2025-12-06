@@ -13,7 +13,9 @@ class Wish {
   WishCategory? wishCategory;
 }
 
-class Wisher {}
+class Wisher {
+  String? bio;
+}
 
 class WishCategory {}
 
