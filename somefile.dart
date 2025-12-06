@@ -7,6 +7,7 @@ void main() {
 void startApp() {}
 
 class Wish {
+  String? id;
   WishStatus status = WishStatus.wished;
   Wisher? wisher;
   WishResolver? assignee;
@@ -21,6 +22,7 @@ class Wisher {
 class WishCategory {}
 
 class UserWish {
+  String? id;
   Wisher? wisher;
 }
 
@@ -150,6 +152,18 @@ void log(Wish wish, String action) {
 
 List<WishLog> getWishLogForCategory(WishCategory category) {
   return logs.where((wish) => wish.wish?.wishCategory == category).toList();
+}
+
+void shareWish(Wish wish, Wisher wisher) {
+  if (wish.wisher != wisher) {
+    throw Exception("You cannot share this");
+  }
+
+  print(
+    getWishesAsUser(
+      wisher,
+    ).firstWhere((sharedWish) => sharedWish.id == wish.id),
+  ); // shared
 }
 
 extension on WishResolver {
