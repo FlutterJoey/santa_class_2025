@@ -23,6 +23,8 @@ class Wish {
   List<Wisher> sharedWith = [];
 
   List<Message> chat = [];
+
+  DateTime? reportTime;
 }
 
 class Wisher {
@@ -90,6 +92,11 @@ List<WishStatistics> getStatistics() {
     };
     return statistics;
   }).toList();
+}
+
+void reportWish(Wish wish) {
+  wish.reportTime ??= DateTime.now();
+  log(wish, "Reported");
 }
 
 void notifySantaOfWish(Wish wish) {}
