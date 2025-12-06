@@ -6,6 +6,13 @@ void main() {
 
 void startApp() {}
 
+class Message {
+  WishResolver? resolverSender;
+  Wisher? wishSender;
+  String? message;
+  DateTime? sendTime;
+}
+
 class Wish {
   String? id;
   WishStatus status = WishStatus.wished;
@@ -14,6 +21,8 @@ class Wish {
   WishCategory? wishCategory;
 
   List<Wisher> sharedWith = [];
+
+  List<Message> chat = [];
 }
 
 class Wisher {
@@ -106,6 +115,24 @@ void createWish(Wish wish) {
 void assignWish(Wish wish, WishResolver resolver) {
   wish.assignee = resolver;
   log(wish, "Assigned to $resolver");
+}
+
+void wisherSendChatMessage(Wish wish, String message, Wisher wisher) {
+    wish.chat.add(
+    Message()
+      ..message = message
+      ..wishSender = wisher
+      ..sendTime = DateTime.now(),
+  );
+}
+
+void resolverSendChatMessage(Wish wish, String message, WishResolver resolver) {
+  wish.chat.add(
+    Message()
+      ..message = message
+      ..resolverSender = resolver
+      ..sendTime = DateTime.now(),
+  );
 }
 
 void resolveWish(WishResolver resolver, Wish wish) {
